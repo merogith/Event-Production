@@ -17,6 +17,16 @@ when this is used for real, and it never leaves the device.
 
 ## Try it
 
+[Open BabyProducer](https://merogith.github.io/Event-Production/) and select **Open the demo**. The workspace contains four fictional productions.
+
+1. Open **AURELIA**, then **Advancing**. Confirm a required item under **Still missing** and watch the readiness count update.
+2. Open **ATLAS**, then **Advancing → Day sheet** to see how travel and production timings come together. **Advance sheet** opens the printable view.
+3. In **ATLAS**, open **Settlement** to see ticket revenue, deductions, settlement terms and the final statement assembled from the same event data.
+
+The demo runs in your browser. Use **Reset** to restore the original demo workspace.
+
+To run locally:
+
 ```bash
 npm install
 npm run dev     # then open the URL it prints and click "Explore the demo"
