@@ -1,4 +1,4 @@
-# BabyProducer
+# BabyProducer — Event Operations
 
 **An advancing tool for people who put on shows.**
 
