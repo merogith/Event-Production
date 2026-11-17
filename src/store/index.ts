@@ -30,6 +30,7 @@ export const useStore = create<AppStore>()(
       partialize: (state) => ({
         sidebarCollapsed: state.sidebarCollapsed,
         tourCompleted: state.tourCompleted,
+        tourStep: state.tourStep,
         activeWorkspaceId: state.activeWorkspaceId,
         activeEventId: state.activeEventId,
         density: state.density,
