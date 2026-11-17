@@ -48,14 +48,26 @@ test.describe('demo experience', () => {
     await page.getByRole('button', { name: /Take the tour/ }).click();
     const tour = page.getByTestId('tour');
     await expect(tour).toContainText('Step 1 of 8');
-    await expect(page).toHaveURL(/\/guests$/);
+    await expect(page).toHaveURL(/\/advancing$/);
+    await expect(page.getByRole('heading', { name: /AURELIA/ })).toBeVisible();
+    const readiness = page.getByTestId('advance-readiness');
+    const before = await readiness.innerText();
+    await page.getByTestId('advance-missing').getByRole('button', { name: /Confirm/ }).first().click();
+    await expect(readiness).not.toHaveText(before);
 
     await tour.getByRole('button', { name: 'Next' }).click();
     await expect(tour).toContainText('Step 2 of 8');
-    await expect(page).toHaveURL(/\/seating$/);
+    await expect(page).toHaveURL(/\/advancing\?tab=daysheet$/);
+    await expect(page.getByRole('heading', { name: /ATLAS/ })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Day sheet', exact: true })).toHaveAttribute('aria-selected', 'true');
+    await page.reload();
+    await expect(page.getByRole('tab', { name: 'Day sheet', exact: true })).toHaveAttribute('aria-selected', 'true');
+    await tour.getByRole('button', { name: 'Next' }).click();
+    await expect(page).toHaveURL(/\/settlement$/);
+    await expect(page.getByRole('heading', { name: /ATLAS/ })).toBeVisible();
 
     // Walk the rest of the tour to its end.
-    for (let step = 0; step < 7; step++) {
+    for (let step = 0; step < 6; step++) {
       await tour.getByRole('button', { name: /Next|Finish/ }).click();
     }
     await expect(tour).toHaveCount(0);

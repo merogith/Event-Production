@@ -9,10 +9,32 @@ interface Stop {
   body: string;
   /** Where the stop lives, relative to the first demo event. */
   route?: (workspaceId: string, eventId: string) => string;
+  eventPrefix?: string;
   action: string;
 }
 
 const STOPS: Stop[] = [
+  {
+    title: 'Advance the show',
+    body: 'Start with AURELIA. Confirm a required line under Still missing and watch the readiness figure update. Your changes stay in this browser; Reset restores the fictional demo.',
+    eventPrefix: 'AURELIA',
+    route: (w, e) => `/w/${w}/events/${e}/advancing`,
+    action: 'Confirm a missing item',
+  },
+  {
+    title: 'See the day come together',
+    body: 'ATLAS has a complete itinerary. Travel, hotel and production calls appear in one chronological day sheet, derived from the advance. Advance sheet opens the printable version.',
+    eventPrefix: 'ATLAS',
+    route: (w, e) => `/w/${w}/events/${e}/advancing?tab=daysheet`,
+    action: 'Inspect the day sheet',
+  },
+  {
+    title: 'Settle the night',
+    body: 'ATLAS has already played. Change a ticket count and see revenue, the deal and the final statement recalculate together. Print the statement to keep a PDF.',
+    eventPrefix: 'ATLAS',
+    route: (w, e) => `/w/${w}/events/${e}/settlement`,
+    action: 'Change a ticket count',
+  },
   {
     title: 'Start with the room',
     body: 'Every guest carries a voice, a tier and an audience. Filter the list, then open anyone to see how their media value breaks down.',
@@ -32,28 +54,10 @@ const STOPS: Stop[] = [
     action: 'Edit a duration',
   },
   {
-    title: 'Advance the show',
-    body: 'Everything agreed before the day, with what is still missing at the top. Confirm a line and the readiness figure moves with it.',
-    route: (w, e) => `/w/${w}/events/${e}/advancing`,
-    action: 'Confirm something',
-  },
-  {
     title: 'Work the door',
     body: 'Type a name, and misspell it if you like. Check someone in and it shows up straight away in any other tab, which will then refuse the duplicate.',
     route: (w, e) => `/w/${w}/events/${e}/checkin`,
     action: 'Check someone in',
-  },
-  {
-    title: 'Watch the floor',
-    body: 'Rearrange the widgets, add one, resize it. The layout is yours and it survives a reload.',
-    route: (w, e) => `/w/${w}/events/${e}/command`,
-    action: 'Rearrange a widget',
-  },
-  {
-    title: 'Settle the night',
-    body: 'Enter what sold and what it cost; the deal is applied for you and the statement is one click from a PDF. Change a number and every total follows.',
-    route: (w, e) => `/w/${w}/events/${e}/settlement`,
-    action: 'Change a ticket count',
   },
   {
     title: 'Now make it yours',
@@ -75,8 +79,10 @@ export function GuidedTour() {
   const completeTour = useStore((s) => s.completeTour);
   const events = useStore((s) => s.events);
 
-  const eventId = events[0]?.id;
   const stop = tourStep === null ? null : STOPS[tourStep];
+  const workspaceEvents = events.filter((event) => event.workspaceId === workspaceId);
+  const eventId = (workspaceEvents.find((event) => stop?.eventPrefix && event.name.startsWith(stop.eventPrefix))
+    ?? workspaceEvents[0])?.id;
 
   useEffect(() => {
     if (!stop?.route || !workspaceId || !eventId) return;

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { AlertTriangle, Download, Plus, Printer } from 'lucide-react';
 import type { AdvanceItem } from '@/data/types';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +37,9 @@ const FILTERS: Array<{ id: Filter; label: string }> = [
  */
 export function AdvancingPage() {
   const { eventId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedTab = searchParams.get('tab');
+  const activeTab = requestedTab === 'daysheet' || requestedTab === 'parties' ? requestedTab : 'checklist';
   const events = useStore((s) => s.events);
   const workspaces = useStore((s) => s.workspaces);
   const setActiveEvent = useStore((s) => s.setActiveEvent);
@@ -189,7 +192,14 @@ export function AdvancingPage() {
         </section>
       )}
 
-      <Tabs defaultValue="checklist" className="mt-8 print:hidden">
+      <Tabs value={activeTab} onValueChange={(tab) => {
+        setSearchParams((previous) => {
+          const next = new URLSearchParams(previous);
+          if (tab === 'checklist') next.delete('tab');
+          else next.set('tab', tab);
+          return next;
+        }, { replace: true });
+      }} className="mt-8 print:hidden">
         <TabsList>
           <TabsTrigger value="checklist">Checklist</TabsTrigger>
           <TabsTrigger value="parties">Parties & contacts</TabsTrigger>

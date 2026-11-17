@@ -23,6 +23,8 @@ when this is used for real, and it never leaves the device.
 2. Open **ATLAS**, then **Advancing → Day sheet** to see how travel and production timings come together. **Advance sheet** opens the printable view.
 3. In **ATLAS**, open **Settlement** to see ticket revenue, deductions, settlement terms and the final statement assembled from the same event data.
 
+**Take the tour** follows these three stops first, then introduces the other modules. It resumes at the same stop after a refresh. Day-sheet links preserve the selected tab so you can return directly to the itinerary.
+
 The demo runs in your browser. Use **Reset** to restore the original demo workspace.
 
 To run locally:
